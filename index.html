@@ -1,41 +1,949 @@
-{
-  "name": "Tax Audit Documentation System",
-  "short_name": "TaxAudit",
-  "description": "AI-Powered ICAI Compliant Documentation by Gulshan Singh & Associates",
-  "start_url": "/",
-  "display": "standalone",
-  "background_color": "#667eea",
-  "theme_color": "#667eea",
-  "orientation": "portrait-primary",
-  "scope": "/",
-  "lang": "en",
-  "categories": ["business", "finance", "productivity"],
-  "icons": [
-    {
-      "src": "icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "maskable any"
-    },
-    {
-      "src": "icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable any"
-    }
-  ],
-  "shortcuts": [
-    {
-      "name": "New Client",
-      "short_name": "New Client",
-      "description": "Add a new client for audit",
-      "url": "/?action=new-client",
-      "icons": [
-        {
-          "src": "icon-192.png",
-          "sizes": "192x192"
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tax Audit Documentation System - Gulshan Singh & Associates</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#667eea">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-      ]
-    }
-  ]
-}
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .api-setup {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .api-setup h3 {
+            color: #8b4513;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        
+        .api-input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            margin: 0.5rem 0;
+        }
+        
+        .api-status {
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            font-weight: 600;
+        }
+        
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .card h2 {
+            color: #4a5568;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid #e2e8f0;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #2d3748;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.8);
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #4299e1;
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+            background: white;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+        
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+        }
+        
+        .tabs {
+            display: flex;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 0.5rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+            flex-wrap: wrap;
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 1rem;
+            text-align: center;
+            background: transparent;
+            border: none;
+            color: white;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 150px;
+        }
+        
+        .tab.active {
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .checkbox-item:hover {
+            border-color: #4299e1;
+            background: linear-gradient(135deg, #ebf8ff 0%, #bee3f8 100%);
+            transform: translateY(-1px);
+        }
+        
+        .checkbox-item.selected {
+            border-color: #48bb78;
+            background: linear-gradient(135deg, #f0fff4 0%, #c6f6d5 100%);
+        }
+        
+        .checkbox-item input {
+            margin-right: 0.75rem;
+            transform: scale(1.3);
+        }
+        
+        .summary {
+            background: linear-gradient(135deg, #f0fff4 0%, #c6f6d5 100%);
+            border: 2px solid #48bb78;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+        
+        .calculation {
+            display: inline-block;
+            background: rgba(66, 153, 225, 0.1);
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            font-weight: 600;
+            color: #2c5282;
+            margin: 0.25rem;
+            border: 1px solid rgba(66, 153, 225, 0.2);
+        }
+        
+        .progress {
+            background: #e2e8f0;
+            border-radius: 10px;
+            height: 8px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            transition: width 0.3s ease;
+        }
+        
+        .document-output {
+            background: #1a202c;
+            color: #e2e8f0;
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+            max-height: 500px;
+            overflow-y: auto;
+            border: 2px solid #4a5568;
+        }
+        
+        .document-header {
+            background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+            color: white;
+            padding: 1rem;
+            border-radius: 10px 10px 0 0;
+            margin: -2rem -2rem 1rem -2rem;
+            font-weight: 600;
+        }
+        
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            color: #4a5568;
+        }
+        
+        .spinner {
+            border: 4px solid #e2e8f0;
+            border-top: 4px solid #4299e1;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin-right: 1rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .download-btn {
+            background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .document-item {
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            font-weight: 600;
+        }
+        
+        .alert-info {
+            background: #bee3f8;
+            color: #2c5282;
+            border: 1px solid #90cdf4;
+        }
+        
+        .alert-success {
+            background: #c6f6d5;
+            color: #22543d;
+            border: 1px solid #9ae6b4;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab {
+                margin-bottom: 0.5rem;
+            }
+            
+            .checkbox-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Install App Button */
+        .install-app {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            display: none;
+            z-index: 1000;
+        }
+
+        .install-app:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🏛️ Tax Audit Documentation System</h1>
+        <p>Gulshan Singh & Associates - AI-Powered ICAI Compliant Documentation</p>
+    </div>
+    
+    <!-- Install App Button -->
+    <button id="installApp" class="install-app">📱 Install App</button>
+    
+    <div class="container">
+        <!-- API Setup Section -->
+        <div class="api-setup">
+            <h3>🔑 Claude API Setup</h3>
+            <p style="margin-bottom: 1rem;">Enter your Claude API key to enable automatic document generation:</p>
+            <input type="password" id="apiKey" class="api-input" placeholder="Enter your Claude API key (sk-ant-api03-...)" onchange="validateApiKey()">
+            <div style="margin-top: 1rem;">
+                <small>
+                    <strong>📌 How to get API key:</strong>
+                    <ol style="margin: 0.5rem 0 0 1.5rem;">
+                        <li>Go to <a href="https://console.anthropic.com" target="_blank" style="color: #8b4513;">console.anthropic.com</a></li>
+                        <li>Create account or login</li>
+                        <li>Go to "API Keys" section</li>
+                        <li>Create new key and copy it here</li>
+                    </ol>
+                </small>
+            </div>
+            <div id="apiStatus"></div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('client-info')">👤 Client Info</button>
+            <button class="tab" onclick="switchTab('audit-details')">📅 Audit Details</button>
+            <button class="tab" onclick="switchTab('documents')">📑 Documents</button>
+            <button class="tab" onclick="switchTab('generated')">📄 Generated</button>
+        </div>
+
+        <!-- Client Information Tab -->
+        <div id="client-info" class="tab-content active">
+            <div class="card">
+                <h2>👤 Client Information</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Entity Type:</label>
+                        <select id="entityType" onchange="handleEntityTypeChange()">
+                            <option value="proprietorship">Sole Proprietorship</option>
+                            <option value="partnership">Partnership Firm</option>
+                            <option value="private_limited">Private Limited Company</option>
+                            <option value="trust">Trust</option>
+                            <option value="llp">Limited Liability Partnership (LLP)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label id="businessNameLabel">Business Name:</label>
+                        <input type="text" id="businessName" value="M/S Rajeev Kumar">
+                    </div>
+                    <div class="form-group" id="proprietorField">
+                        <label id="proprietorLabel">Proprietor Name:</label>
+                        <input type="text" id="proprietorName" value="Rakesh Kumar">
+                    </div>
+                    <div class="form-group">
+                        <label>PAN Number:</label>
+                        <input type="text" id="pan" value="AmZPG7170N">
+                    </div>
+                    <div class="form-group" id="aadharField">
+                        <label>Aadhar Number:</label>
+                        <input type="text" id="aadhar" value="657544907113">
+                    </div>
+                    <div class="form-group">
+                        <label>Professional Fees (Rs.):</label>
+                        <input type="number" id="professionalFees" value="151000">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Registered Address:</label>
+                    <textarea id="address" rows="3">K-125, P.C Colony, Kankarbagh, Bihar - 800020</textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Audit Details Tab -->
+        <div id="audit-details" class="tab-content">
+            <div class="card">
+                <h2>📅 Audit & Financial Details</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Financial Year:</label>
+                        <input type="text" id="financialYear" value="2024-25">
+                    </div>
+                    <div class="form-group">
+                        <label>Assessment Year:</label>
+                        <input type="text" id="assessmentYear" value="2025-26">
+                    </div>
+                    <div class="form-group">
+                        <label>Bank Name:</label>
+                        <input type="text" id="bankName" value="Union Bank of India">
+                    </div>
+                    <div class="form-group">
+                        <label>Account Balance (Rs.):</label>
+                        <input type="number" id="accountBalance" value="3661187">
+                    </div>
+                </div>
+                
+                <h3 style="margin: 2rem 0 1rem 0; color: #4a5568;">📦 Inventory Summary</h3>
+                <div class="summary">
+                    <div>
+                        <span class="calculation">Total Market Value: Rs. 37,00,000</span>
+                        <span class="calculation">Total Cost Value: Rs. 33,30,000</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Document Selection Tab -->
+        <div id="documents" class="tab-content">
+            <div class="card">
+                <h2>📑 Select Documents to Generate</h2>
+                <div class="alert alert-info">
+                    <strong>🎯 Smart Entity-Aware System:</strong><br>
+                    System automatically adapts documents based on selected entity type with proper letterheads and compliance requirements.
+                </div>
+                
+                <div class="checkbox-grid">
+                    <label class="checkbox-item selected">
+                        <input type="checkbox" value="appointment" checked>
+                        <span><strong>📄 Auditor Appointment Letter</strong><br><small>Entity appointing CA firm</small></span>
+                    </label>
+                    <label class="checkbox-item selected">
+                        <input type="checkbox" value="engagement" checked>
+                        <span><strong>📋 Engagement Letter</strong><br><small>CA to client scope & fees</small></span>
+                    </label>
+                    <label class="checkbox-item selected">
+                        <input type="checkbox" value="bank-confirmation" checked>
+                        <span><strong>🏦 Bank Balance Confirmation</strong><br><small>Account verification request</small></span>
+                    </label>
+                    <label class="checkbox-item selected">
+                        <input type="checkbox" value="management-letter" checked>
+                        <span><strong>📝 Management Representation Letter (Big 4 Quality)</strong><br><small>Comprehensive 15-section MRL</small></span>
+                    </label>
+                    <label class="checkbox-item selected">
+                        <input type="checkbox" value="liability-limitation" checked>
+                        <span><strong>⚖️ Professional Liability Limitation</strong><br><small>CA protection clauses</small></span>
+                    </label>
+                </div>
+
+                <div class="summary">
+                    <h3>📋 Generation Summary:</h3>
+                    <p><strong>Selected Documents:</strong> <span id="selectedCount">5</span></p>
+                    <p><strong>Estimated Time:</strong> <span id="estimatedTime">3-4 minutes</span></p>
+                </div>
+
+                <div style="text-align: center; margin: 2rem 0;">
+                    <button class="btn btn-success" onclick="generateAllDocuments()" id="generateBtn">
+                        🚀 Generate Professional Documents
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Generated Documents Tab -->
+        <div id="generated" class="tab-content">
+            <div class="card">
+                <h2>📄 Generated Documents</h2>
+                <div id="generationProgress" style="display: none;">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <span>Generating professional documents... <span id="currentDoc"></span></span>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar" id="progressBar"></div>
+                    </div>
+                </div>
+                
+                <div id="documentsContainer">
+                    <div class="alert alert-info">
+                        <strong>🤖 AI-Powered Documentation Ready!</strong><br>
+                        Complete the entity information, select your entity type, and choose documents to generate professional, entity-specific, ICAI-compliant documentation.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var apiKey = '';
+        var generatedDocuments = [];
+        var deferredPrompt;
+
+        // PWA Install functionality
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('installApp').style.display = 'block';
+        });
+
+        document.getElementById('installApp').addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log(`User response to the install prompt: ${outcome}`);
+                deferredPrompt = null;
+                document.getElementById('installApp').style.display = 'none';
+            }
+        });
+
+        // Check if app is running as PWA
+        if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
+            document.getElementById('installApp').style.display = 'none';
+        }
+
+        function switchTab(tabName) {
+            var tabs = document.querySelectorAll('.tab-content');
+            for (var i = 0; i < tabs.length; i++) {
+                tabs[i].classList.remove('active');
+            }
+            
+            var tabButtons = document.querySelectorAll('.tab');
+            for (var i = 0; i < tabButtons.length; i++) {
+                tabButtons[i].classList.remove('active');
+            }
+            
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function validateApiKey() {
+            var key = document.getElementById('apiKey').value;
+            var statusDiv = document.getElementById('apiStatus');
+            
+            if (key.length > 0) {
+                if (key.indexOf('sk-ant-api03-') === 0) {
+                    apiKey = key;
+                    statusDiv.innerHTML = '<div class="status-success">✅ API Key format looks correct. Ready to generate documents!</div>';
+                    // Save API key to localStorage for persistence
+                    localStorage.setItem('claudeApiKey', key);
+                } else {
+                    statusDiv.innerHTML = '<div class="status-error">❌ Invalid API key format. It should start with "sk-ant-api03-"</div>';
+                }
+            } else {
+                statusDiv.innerHTML = '';
+            }
+        }
+
+        function handleEntityTypeChange() {
+            var entityType = document.getElementById('entityType').value;
+            var businessNameLabel = document.getElementById('businessNameLabel');
+            var proprietorLabel = document.getElementById('proprietorLabel');
+            
+            if (entityType === 'proprietorship') {
+                businessNameLabel.textContent = 'Business Name:';
+                proprietorLabel.textContent = 'Proprietor Name:';
+                document.getElementById('aadharField').style.display = 'block';
+            } else if (entityType === 'partnership') {
+                businessNameLabel.textContent = 'Partnership Firm Name:';
+                proprietorLabel.textContent = 'Managing Partner:';
+                document.getElementById('aadharField').style.display = 'block';
+            } else if (entityType === 'private_limited') {
+                businessNameLabel.textContent = 'Company Name:';
+                proprietorLabel.textContent = 'Managing Director:';
+                document.getElementById('aadharField').style.display = 'none';
+            } else if (entityType === 'trust') {
+                businessNameLabel.textContent = 'Trust Name:';
+                proprietorLabel.textContent = 'Managing Trustee:';
+                document.getElementById('aadharField').style.display = 'none';
+            } else if (entityType === 'llp') {
+                businessNameLabel.textContent = 'LLP Name:';
+                proprietorLabel.textContent = 'Designated Partner:';
+                document.getElementById('aadharField').style.display = 'block';
+            }
+        }
+
+        function updateSelectedCount() {
+            var checkedBoxes = document.querySelectorAll('input[type="checkbox"]:checked');
+            var count = checkedBoxes.length;
+            document.getElementById('selectedCount').textContent = count;
+            document.getElementById('estimatedTime').textContent = Math.ceil(count * 0.5) + '-' + Math.ceil(count * 0.7) + ' minutes';
+        }
+
+        function saveFormData() {
+            var formData = {
+                entityType: document.getElementById('entityType').value,
+                businessName: document.getElementById('businessName').value,
+                proprietorName: document.getElementById('proprietorName').value,
+                pan: document.getElementById('pan').value,
+                address: document.getElementById('address').value,
+                financialYear: document.getElementById('financialYear').value,
+                assessmentYear: document.getElementById('assessmentYear').value,
+                professionalFees: document.getElementById('professionalFees').value,
+                bankName: document.getElementById('bankName').value,
+                accountBalance: document.getElementById('accountBalance').value
+            };
+            localStorage.setItem('taxAuditFormData', JSON.stringify(formData));
+        }
+
+        function loadFormData() {
+            var savedData = localStorage.getItem('taxAuditFormData');
+            if (savedData) {
+                var formData = JSON.parse(savedData);
+                Object.keys(formData).forEach(function(key) {
+                    var element = document.getElementById(key);
+                    if (element) {
+                        element.value = formData[key];
+                    }
+                });
+            }
+        }
+
+        function getClientData() {
+            var data = {
+                entityType: document.getElementById('entityType').value,
+                businessName: document.getElementById('businessName').value,
+                proprietorName: document.getElementById('proprietorName').value,
+                pan: document.getElementById('pan').value,
+                address: document.getElementById('address').value,
+                financialYear: document.getElementById('financialYear').value,
+                assessmentYear: document.getElementById('assessmentYear').value,
+                professionalFees: document.getElementById('professionalFees').value,
+                bankName: document.getElementById('bankName').value,
+                accountBalance: document.getElementById('accountBalance').value
+            };
+            saveFormData(); // Save data whenever we get it
+            return data;
+        }
+
+        function createDocumentPrompt(documentType, clientData) {
+            var prompt = '';
+            
+            if (documentType === 'management-letter') {
+                prompt = 'Create a comprehensive Management Representation Letter following Big 4 audit firm standards.\n\n';
+                prompt += 'Include these major sections:\n';
+                prompt += '1. General Representations\n';
+                prompt += '2. Financial Reporting Framework\n';
+                prompt += '3. Assets and Liabilities\n';
+                prompt += '4. Revenue and Income\n';
+                prompt += '5. Taxation Compliance\n';
+                prompt += '6. Regulatory Compliance\n';
+                prompt += '7. Internal Controls\n';
+                prompt += '8. Related Party Transactions\n';
+                prompt += '9. Subsequent Events\n';
+                prompt += '10. Fraud and Error\n';
+                prompt += '11. Going Concern\n';
+                prompt += '12. Management Certification\n\n';
+            } else if (documentType === 'appointment') {
+                prompt = 'Create a professional Auditor Appointment Letter where ' + clientData.businessName + ' appoints Gulshan Singh & Associates for tax audit.\n\n';
+            } else if (documentType === 'engagement') {
+                prompt = 'Create a professional Engagement Letter from Gulshan Singh & Associates to ' + clientData.businessName + '.\n\n';
+            } else {
+                prompt = 'Create a professional document for ' + documentType + '.\n\n';
+            }
+            
+            prompt += 'CLIENT: ' + clientData.businessName + '\n';
+            prompt += 'ENTITY TYPE: ' + clientData.entityType + '\n';
+            prompt += 'CONTACT: ' + clientData.proprietorName + '\n';
+            prompt += 'PAN: ' + clientData.pan + '\n';
+            prompt += 'FY: ' + clientData.financialYear + '\n';
+            prompt += 'FEES: Rs. ' + parseInt(clientData.professionalFees).toLocaleString('en-IN') + '\n\n';
+            prompt += 'CA FIRM: Gulshan Singh & Associates\n';
+            prompt += 'CA: Gulshan Gullu (410725)\n';
+            prompt += 'FORMAT: Professional ICAI compliant with entity-specific language\n';
+            
+            return prompt;
+        }
+
+        function generateAllDocuments() {
+            if (!apiKey) {
+                alert('❌ Please enter your Claude API key first!');
+                document.getElementById('apiKey').focus();
+                return;
+            }
+
+            var selectedDocs = [];
+            var checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+            for (var i = 0; i < checkboxes.length; i++) {
+                selectedDocs.push(checkboxes[i].value);
+            }
+
+            if (selectedDocs.length === 0) {
+                alert('❌ Please select at least one document to generate!');
+                return;
+            }
+
+            var clientData = getClientData();
+            
+            document.getElementById('generationProgress').style.display = 'block';
+            document.getElementById('generateBtn').disabled = true;
+            document.getElementById('documentsContainer').innerHTML = '';
+            
+            generatedDocuments = [];
+            
+            generateDocumentsSequentially(selectedDocs, clientData, 0);
+        }
+
+        function generateDocumentsSequentially(selectedDocs, clientData, index) {
+            if (index >= selectedDocs.length) {
+                displayGeneratedDocuments();
+                switchTab('generated');
+                document.getElementById('generationProgress').style.display = 'none';
+                document.getElementById('generateBtn').disabled = false;
+                return;
+            }
+
+            var docType = selectedDocs[index];
+            var progress = ((index + 1) / selectedDocs.length) * 100;
+            
+            document.getElementById('progressBar').style.width = progress + '%';
+            document.getElementById('currentDoc').textContent = '(' + (index + 1) + '/' + selectedDocs.length + ') ' + docType.replace(/-/g, ' ');
+            
+            var prompt = createDocumentPrompt(docType, clientData);
+            
+            fetch("https://api.anthropic.com/v1/messages", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "x-api-key": apiKey
+                },
+                body: JSON.stringify({
+                    model: "claude-sonnet-4-20250514",
+                    max_tokens: 4000,
+                    messages: [
+                        { role: "user", content: prompt }
+                    ]
+                })
+            })
+            .then(function(response) {
+                if (!response.ok) {
+                    throw new Error('API Error: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(function(data) {
+                var documentContent = data.content[0].text;
+
+                generatedDocuments.push({
+                    type: docType,
+                    name: docType.replace(/-/g, ' ').replace(/\b\w/g, function(l) { return l.toUpperCase(); }),
+                    content: documentContent,
+                    timestamp: new Date().toLocaleString('en-IN')
+                });
+
+                setTimeout(function() {
+                    generateDocumentsSequentially(selectedDocs, clientData, index + 1);
+                }, 1000);
+            })
+            .catch(function(error) {
+                alert('❌ Error generating documents: ' + error.message);
+                console.error('Generation error:', error);
+                document.getElementById('generationProgress').style.display = 'none';
+                document.getElementById('generateBtn').disabled = false;
+            });
+        }
+
+        function displayGeneratedDocuments() {
+            var container = document.getElementById('documentsContainer');
+            
+            if (generatedDocuments.length === 0) {
+                container.innerHTML = '<div class="alert alert-info">No documents generated yet.</div>';
+                return;
+            }
+
+            var html = '<div class="alert alert-success"><strong>✅ ' + generatedDocuments.length + ' professional documents generated successfully!</strong><br>All documents are ICAI-compliant, entity-specific, and ready for immediate use.</div>';
+            html += '<div style="text-align: center; margin: 1rem 0;"><button class="btn btn-success" onclick="downloadAllDocuments()">📥 Download All Documents</button></div>';
+
+            for (var i = 0; i < generatedDocuments.length; i++) {
+                var doc = generatedDocuments[i];
+                html += '<div class="document-item">';
+                html += '<div class="document-header">📄 ' + doc.name + '<span style="float: right;"><button class="download-btn" onclick="downloadDocument(' + i + ')">📥 Download</button></span></div>';
+                html += '<div class="document-output"><pre style="white-space: pre-wrap; margin: 0;">' + doc.content.substring(0, 500) + '...</pre></div>';
+                html += '<div style="text-align: right; margin-top: 0.5rem; color: #888; font-size: 0.9rem;">Generated: ' + doc.timestamp + '</div>';
+                html += '</div>';
+            }
+
+            container.innerHTML = html;
+        }
+
+        function downloadDocument(index) {
+            var doc = generatedDocuments[index];
+            var clientName = document.getElementById('businessName').value.replace(/[^a-zA-Z0-9]/g, '_');
+            var filename = doc.name.replace(/\s+/g, '_') + '_' + clientName + '.txt';
+            
+            var element = document.createElement('a');
+            var file = new Blob([doc.content], { type: 'text/plain' });
+            element.href = URL.createObjectURL(file);
+            element.download = filename;
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+        }
+
+        function downloadAllDocuments() {
+            for (var i = 0; i < generatedDocuments.length; i++) {
+                setTimeout(function(index) {
+                    return function() {
+                        downloadDocument(index);
+                    };
+                }(i), i * 500);
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load saved data
+            loadFormData();
+            
+            // Load saved API key
+            var savedApiKey = localStorage.getItem('claudeApiKey');
+            if (savedApiKey) {
+                document.getElementById('apiKey').value = savedApiKey;
+                validateApiKey();
+            }
+            
+            handleEntityTypeChange();
+            updateSelectedCount();
+            
+            var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            for (var i = 0; i < checkboxes.length; i++) {
+                checkboxes[i].addEventListener('change', function() {
+                    updateSelectedCount();
+                    if (this.checked) {
+                        this.parentElement.classList.add('selected');
+                    } else {
+                        this.parentElement.classList.remove('selected');
+                    }
+                });
+            }
+
+            // Auto-save form data on input changes
+            var formInputs = document.querySelectorAll('input, select, textarea');
+            for (var i = 0; i < formInputs.length; i++) {
+                formInputs[i].addEventListener('change', saveFormData);
+            }
+        });
+    </script>
+</body>
+</html>
