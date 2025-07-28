@@ -822,18 +822,17 @@
             
             var prompt = createDocumentPrompt(docType, clientData);
             
-            fetch("https://cors-anywhere.herokuapp.com/https://api.anthropic.com/v1/messages", {
+           // Even more reliable CORS proxy:
+fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent('https://api.anthropic.com/v1/messages')}`, {
     method: "POST",
     headers: {
         "Content-Type": "application/json",
         "x-api-key": apiKey
     },
     body: JSON.stringify({
-        model: "claude-sonnet-4-20250514",
+        model: "claude-sonnet-4-20250514", 
         max_tokens: 4000,
-        messages: [
-            { role: "user", content: prompt }
-        ]
+        messages: [{ role: "user", content: prompt }]
     })
 })
             .then(function(response) {
